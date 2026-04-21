@@ -1,0 +1,27 @@
+{
+    "name": "@wxn0brp/db-e2e",
+    "version": "0.0.1",
+    "main": "src/index.ts",
+    "description": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wxn0brP/ValtheraDB-e2e.git"
+    },
+    "homepage": "https://github.com/wxn0brP/ValtheraDB-e2e",
+    "bin": {
+        "valthera-e2e": "./src/index.ts"
+    },
+    "author": "wxn0brP",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "start": "bun run src/index.ts"
+    },
+    "devDependencies": {
+        "@types/bun": "*",
+        "typescript": "^6"
+    },
+    "dependencies": {
+        "@wxn0brp/db-core": "^0.10.4"
+    }
+}

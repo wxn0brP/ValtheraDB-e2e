@@ -1,0 +1,23 @@
+name: "ValtheraDB E2E"
+description: "Run E2E compliance tests against a ValtheraDB adapter"
+
+inputs:
+  adapter-path:
+    description: "Path to the adapter file (default export returning ActionsBase)"
+    required: false
+    default: "./valthera-e2e/index.ts"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v6
+      with:
+        repository: wxn0brP/valtheraDB-e2e
+        ref: master
+        path: __e2e__
+
+    - run: |
+        cd __e2e__
+        bun install
+        bun src/index.ts "${{ github.workspace }}/${{ inputs.adapter-path }}"
+      shell: bash

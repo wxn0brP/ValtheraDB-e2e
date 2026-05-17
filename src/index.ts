@@ -8,7 +8,7 @@ import { runTests } from "./runner";
 import type { RunnerOptions } from "./types";
 
 async function main() {
-	const { adapterPath, domains } = getArgs();
+	const { adapterPath, domains, tests } = getArgs();
 
 	console.log("");
 	console.log("/==========================================================\\");
@@ -20,6 +20,9 @@ async function main() {
 		console.log(`  Domains: ${domains.join(", ")}`);
 	else
 		console.log("  Domains: all");
+
+	if (tests)
+		console.log(`  Tests: ${tests.join(", ")}`);
 
 	const adapterFactory = await loadAdapter(adapterPath);
 
@@ -42,6 +45,7 @@ async function main() {
 
 	const opts: RunnerOptions = {
 		domains,
+		tests,
 		config,
 	};
 

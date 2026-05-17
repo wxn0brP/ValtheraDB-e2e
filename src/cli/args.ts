@@ -5,6 +5,7 @@ import { VALID_DOMAINS } from "./constants";
 export interface ParsedArgs {
 	adapterPath: string;
 	domains?: TestDomain[];
+	tests?: string[];
 }
 
 export function printHelp(): void {
@@ -15,11 +16,14 @@ Options:
   -h, --help     		Show this help message
   -d, --domain <d>   	Run only specified domains (comma-separated)
 	 Valid: ${VALID_DOMAINS.join(", ")}
+  -t, --test <t>     	Run only tests matching given prefixes (comma-separated)
   -e, --exclude <e> 	Exclude specified domains (comma-separated)
 
 Examples:
   valthera-e2e ./valthera-e2e/index.ts
   valthera-e2e -d crud-add,crud-read ./valthera-e2e/index.ts
+  valthera-e2e -t add-with-auto ./valthera-e2e/index.ts
+  valthera-e2e -d crud-add -t add-with-auto-string-id ./valthera-e2e/index.ts
   valthera-e2e -h
 `.trim());
 }
@@ -27,12 +31,16 @@ Examples:
 export function getArgs(): ParsedArgs {
 	const args = Bun.argv.slice(2);
 
-	const { values, positionals } = parseArgs({
+		const { values, positionals } = parseArgs({
 		args,
 		options: {
 			domain: {
 				type: "string",
 				short: "d",
+			},
+			test: {
+				type: "string",
+				short: "t",
 			},
 			help: {
 				type: "boolean",
@@ -54,6 +62,7 @@ export function getArgs(): ParsedArgs {
 
 	let adapterPath = "./valthera-e2e/index.ts";
 	let domains: TestDomain[] | undefined;
+	let tests: string[] | undefined;
 
 	if (positionals.length > 0)
 		adapterPath = positionals[0] as string;
@@ -86,5 +95,9 @@ export function getArgs(): ParsedArgs {
 		domains = (domains?.length ? domains : VALID_DOMAINS).filter((d) => !parsed.includes(d));
 	}
 
-	return { adapterPath, domains };
+	if (values.test) {
+		tests = values.test.split(",").map((t) => t.trim()).filter(Boolean);
+	}
+
+	return { adapterPath, domains, tests };
 }

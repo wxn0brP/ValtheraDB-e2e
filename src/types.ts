@@ -40,6 +40,7 @@ export interface AdapterFactory {
 
 export interface RunnerOptions {
 	domains?: TestDomain[];
+	tests?: string[];
 	config?: SuiteConfig;
 }
 

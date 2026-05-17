@@ -30,6 +30,13 @@ function filterTests(opts?: RunnerOptions) {
 		filtered = filtered.filter((t) => opts.domains!.includes(t.domain));
 	}
 
+	// Filter by test name prefixes if specified
+	if (opts?.tests && opts.tests.length > 0) {
+		filtered = filtered.filter((t) =>
+			opts.tests.some((prefix) => t.name.startsWith(prefix))
+		);
+	}
+
 	return filtered;
 }
 

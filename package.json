@@ -22,6 +22,6 @@
         "typescript": "^6"
     },
     "dependencies": {
-        "@wxn0brp/db-core": "^0.10.4"
+        "@wxn0brp/db-core": "^0.11.0"
     }
 }

@@ -1,7 +1,7 @@
 import type { SuiteConfig } from "../types";
 
 export async function loadConfig(adapterDir: string): Promise<SuiteConfig | undefined> {
-	const configPath = `${adapterDir}/valthera-e2e/config.json`;
+	const configPath = `${adapterDir}/config.json`;
 
 	try {
 		const file = Bun.file(configPath);

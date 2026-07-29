@@ -31,7 +31,7 @@ Examples:
 }
 
 export function getArgs(): ParsedArgs {
-	const args = Bun.argv.slice(2);
+	const args = process.argv.slice(2);
 
 	const { values, positionals } = parseArgs({
 		args,
@@ -62,7 +62,7 @@ export function getArgs(): ParsedArgs {
 		process.exit(0);
 	}
 
-	let adapterPath = "./valthera-e2e/index.ts";
+	let adapterPath = "./valthera-e2e/index.js";
 	let domains: TestDomain[] | undefined;
 	let tests: string[] | undefined;
 

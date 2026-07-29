@@ -4,12 +4,6 @@ import type { AdapterFactory } from "../types";
 export async function loadAdapter(path: string): Promise<AdapterFactory> {
 	const resolved = path.startsWith(".") ? `${process.cwd()}/${path}` : path;
 
-	const file = Bun.file(resolved);
-	if (!(await file.exists())) {
-		console.error(`Error: Adapter file not found: ${resolved}`);
-		process.exit(1);
-	}
-
 	let mod: any;
 	try {
 		mod = await import(resolved);

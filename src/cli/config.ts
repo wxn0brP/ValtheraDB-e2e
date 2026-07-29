@@ -1,3 +1,4 @@
+import { access, readFile } from "fs/promises";
 import type { SuiteConfig } from "../types";
 
 export async function loadConfig(
@@ -6,10 +7,13 @@ export async function loadConfig(
 	const configPath = `${adapterDir}/config.json`;
 
 	try {
-		const file = Bun.file(configPath);
-		if (!(await file.exists())) return undefined;
+		await access(configPath);
+	} catch {
+		return undefined;
+	}
 
-		const text = await file.text();
+	try {
+		const text = await readFile(configPath, "utf-8");
 		const config = JSON.parse(text) as SuiteConfig;
 		return config;
 	} catch (err: any) {

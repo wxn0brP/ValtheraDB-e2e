@@ -1,12 +1,13 @@
 import type { SuiteConfig } from "../types";
 
-export async function loadConfig(adapterDir: string): Promise<SuiteConfig | undefined> {
+export async function loadConfig(
+	adapterDir: string,
+): Promise<SuiteConfig | undefined> {
 	const configPath = `${adapterDir}/config.json`;
 
 	try {
 		const file = Bun.file(configPath);
-		if (!(await file.exists()))
-			return undefined;
+		if (!(await file.exists())) return undefined;
 
 		const text = await file.text();
 		const config = JSON.parse(text) as SuiteConfig;

@@ -5,12 +5,15 @@ import type {
 	RunnerOptions,
 	RunnerResult,
 	TestDomain,
-	TestResult
+	TestResult,
 } from "./types";
 
 function shouldSkipTest(
-	test: { domain: TestDomain; name: string },
-	opts?: RunnerOptions
+	test: {
+		domain: TestDomain;
+		name: string;
+	},
+	opts?: RunnerOptions,
 ): boolean {
 	if (!opts?.config?.skip) return false;
 
@@ -27,13 +30,13 @@ function filterTests(opts?: RunnerOptions) {
 
 	// Filter by domains if specified
 	if (opts?.domains && opts.domains.length > 0) {
-		filtered = filtered.filter((t) => opts.domains!.includes(t.domain));
+		filtered = filtered.filter(t => opts.domains!.includes(t.domain));
 	}
 
 	// Filter by test name prefixes if specified
 	if (opts?.tests && opts.tests.length > 0) {
-		filtered = filtered.filter((t) =>
-			opts.tests.some((prefix) => t.name.startsWith(prefix))
+		filtered = filtered.filter(t =>
+			opts.tests.some(prefix => t.name.startsWith(prefix)),
 		);
 	}
 
@@ -42,13 +45,15 @@ function filterTests(opts?: RunnerOptions) {
 
 export async function runTests(
 	adapterFactory: AdapterFactory,
-	opts?: RunnerOptions
+	opts?: RunnerOptions,
 ): Promise<RunnerResult> {
 	// Wrap adapter factory to return a ValtheraClass instance
 	const dbFactory = async () => {
 		const adapter = await adapterFactory();
 		if (!adapter) throw new Error("Adapter factory returned null");
-		const db = new ValtheraClass({ dbAction: adapter });
+		const db = new ValtheraClass({
+			dbAction: adapter,
+		});
 		await db.init();
 		return db;
 	};

@@ -7,7 +7,9 @@ function formatDuration(ms: number): string {
 	return `${ms.toFixed(1)}ms`;
 }
 
-export function printResults(result: Awaited<ReturnType<typeof runTests>>): void {
+export function printResults(
+	result: Awaited<ReturnType<typeof runTests>>,
+): void {
 	console.log("");
 	console.log("=".repeat(60));
 	console.log(" E2E Test Results");
@@ -25,11 +27,19 @@ export function printResults(result: Awaited<ReturnType<typeof runTests>>): void
 		console.log(` 📁 ${domain}`);
 
 		for (const r of domainResults) {
-			const icon = r.status === "passed" ? "  💜" : r.status === "failed" ? "  ❌" : "  ⚙️";
-			const color = r.status === "passed" ? "\x1b[32m" : r.status === "failed" ? "\x1b[31m" : "\x1b[33m";
+			const icon =
+				r.status === "passed" ? "  💜" : r.status === "failed" ? "  ❌" : "  ⚙️";
+			const color =
+				r.status === "passed"
+					? "\x1b[32m"
+					: r.status === "failed"
+						? "\x1b[31m"
+						: "\x1b[33m";
 			const reset = "\x1b[0m";
 
-			console.log(`  ${color}${icon} ${r.name}${reset} (${formatDuration(r.duration)})`);
+			console.log(
+				`  ${color}${icon} ${r.name}${reset} (${formatDuration(r.duration)})`,
+			);
 
 			if (r.status === "failed" && r.error)
 				console.log(`    \x1b[31m${r.error}\x1b[0m`);
@@ -39,12 +49,13 @@ export function printResults(result: Awaited<ReturnType<typeof runTests>>): void
 	}
 
 	console.log("=".repeat(60));
-	console.log(`
+	console.log(
+		`
 Total: ${result.total} |
 \x1b[32mPassed: ${result.passed}\x1b[0m |
 \x1b[31mFailed: ${result.failed}\x1b[0m |
-\x1b[33mSkipped: ${result.skipped}\x1b[0m`
-		.replaceAll("\n", " "));
+\x1b[33mSkipped: ${result.skipped}\x1b[0m`.replaceAll("\n", " "),
+	);
 	console.log("=".repeat(60));
 	console.log("");
 }

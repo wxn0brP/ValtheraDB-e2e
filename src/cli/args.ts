@@ -9,7 +9,8 @@ export interface ParsedArgs {
 }
 
 export function printHelp(): void {
-	console.log(`
+	console.log(
+		`
 Usage: valthera-e2e [options] [adapter-path]
 
 Options:
@@ -25,13 +26,14 @@ Examples:
   valthera-e2e -t add-with-auto ./valthera-e2e/index.ts
   valthera-e2e -d crud-add -t add-with-auto-string-id ./valthera-e2e/index.ts
   valthera-e2e -h
-`.trim());
+`.trim(),
+	);
 }
 
 export function getArgs(): ParsedArgs {
 	const args = Bun.argv.slice(2);
 
-		const { values, positionals } = parseArgs({
+	const { values, positionals } = parseArgs({
 		args,
 		options: {
 			domain: {
@@ -49,7 +51,7 @@ export function getArgs(): ParsedArgs {
 			exclude: {
 				type: "string",
 				short: "e",
-			}
+			},
 		},
 		strict: true,
 		allowPositionals: true,
@@ -64,8 +66,7 @@ export function getArgs(): ParsedArgs {
 	let domains: TestDomain[] | undefined;
 	let tests: string[] | undefined;
 
-	if (positionals.length > 0)
-		adapterPath = positionals[0] as string;
+	if (positionals.length > 0) adapterPath = positionals[0] as string;
 
 	if (values.domain) {
 		const domainValues = values.domain.split(",");
@@ -73,7 +74,9 @@ export function getArgs(): ParsedArgs {
 		for (const d of domainValues) {
 			const trimmed = d.trim() as TestDomain;
 			if (!VALID_DOMAINS.includes(trimmed)) {
-				console.error(`Error: Unknown domain "${trimmed}". Valid domains: ${VALID_DOMAINS.join(", ")}`);
+				console.error(
+					`Error: Unknown domain "${trimmed}". Valid domains: ${VALID_DOMAINS.join(", ")}`,
+				);
 				process.exit(1);
 			}
 			parsed.push(trimmed);
@@ -87,17 +90,28 @@ export function getArgs(): ParsedArgs {
 		for (const d of excludeValues) {
 			const trimmed = d.trim() as TestDomain;
 			if (!VALID_DOMAINS.includes(trimmed)) {
-				console.error(`Error: Unknown domain "${trimmed}". Valid domains: ${VALID_DOMAINS.join(", ")}`);
+				console.error(
+					`Error: Unknown domain "${trimmed}". Valid domains: ${VALID_DOMAINS.join(", ")}`,
+				);
 				process.exit(1);
 			}
 			parsed.push(trimmed);
 		}
-		domains = (domains?.length ? domains : VALID_DOMAINS).filter((d) => !parsed.includes(d));
+		domains = (domains?.length ? domains : VALID_DOMAINS).filter(
+			d => !parsed.includes(d),
+		);
 	}
 
 	if (values.test) {
-		tests = values.test.split(",").map((t) => t.trim()).filter(Boolean);
+		tests = values.test
+			.split(",")
+			.map(t => t.trim())
+			.filter(Boolean);
 	}
 
-	return { adapterPath, domains, tests };
+	return {
+		adapterPath,
+		domains,
+		tests,
+	};
 }

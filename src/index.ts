@@ -16,18 +16,17 @@ async function main() {
 	console.log("\\==========================================================/");
 	console.log("");
 	console.log(`  Adapter: ${adapterPath}`);
-	if (domains)
-		console.log(`  Domains: ${domains.join(", ")}`);
-	else
-		console.log("  Domains: all");
+	if (domains) console.log(`  Domains: ${domains.join(", ")}`);
+	else console.log("  Domains: all");
 
-	if (tests)
-		console.log(`  Tests: ${tests.join(", ")}`);
+	if (tests) console.log(`  Tests: ${tests.join(", ")}`);
 
 	const adapterFactory = await loadAdapter(adapterPath);
 
 	// Determine adapter directory for config resolution
-	const resolved = adapterPath.startsWith(".") ? `${process.cwd()}/${adapterPath}` : adapterPath;
+	const resolved = adapterPath.startsWith(".")
+		? `${process.cwd()}/${adapterPath}`
+		: adapterPath;
 	const adapterDir = resolved.substring(0, resolved.lastIndexOf("/"));
 
 	const config = await loadConfig(adapterDir);
@@ -62,7 +61,7 @@ async function main() {
 	}
 }
 
-main().catch((err) => {
+main().catch(err => {
 	console.error("Fatal error:", err);
 	process.exit(1);
 });

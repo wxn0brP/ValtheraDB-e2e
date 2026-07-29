@@ -32,21 +32,32 @@ export async function loadAdapter(path: string): Promise<AdapterFactory> {
 	return mod.default as AdapterFactory;
 }
 
-export async function validateAdapterFactory(adapterFactory: AdapterFactory): Promise<void> {
+export async function validateAdapterFactory(
+	adapterFactory: AdapterFactory,
+): Promise<void> {
 	try {
 		const adapter = await adapterFactory();
-		if (!adapter)
-			throw new Error("Adapter factory returned null or undefined");
+		if (!adapter) throw new Error("Adapter factory returned null or undefined");
 
-		const db = new ValtheraClass({ dbAction: adapter });
+		const db = new ValtheraClass({
+			dbAction: adapter,
+		});
 		await db.init();
 
 		const requiredMethods = [
-			"add", "find", "findOne",
-			"update", "updateOne",
-			"remove", "removeOne",
-			"updateOneOrAdd", "toggleOne",
-			"getCollections", "ensureCollection", "issetCollection", "removeCollection",
+			"add",
+			"find",
+			"findOne",
+			"update",
+			"updateOne",
+			"remove",
+			"removeOne",
+			"updateOneOrAdd",
+			"toggleOne",
+			"getCollections",
+			"ensureCollection",
+			"issetCollection",
+			"removeCollection",
 		];
 
 		for (const method of requiredMethods)

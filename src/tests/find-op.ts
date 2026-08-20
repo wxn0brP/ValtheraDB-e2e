@@ -1,10 +1,11 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-limit",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -37,7 +38,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-sortBy",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -76,7 +77,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "findOpts-select",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -104,7 +105,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-offset",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -139,7 +140,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-reverse",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -173,7 +174,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "findOpts-exclude",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -183,7 +184,7 @@ export const findOpTests: TestDefinition[] = [
 					c: 3,
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				findOpts: {
 					exclude: [
@@ -200,7 +201,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-limit-with-offset",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -244,7 +245,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-aggregation-min",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -267,7 +268,7 @@ export const findOpTests: TestDefinition[] = [
 					val: 5,
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				dbFindOpts: {
 					groupBy: "group",
@@ -289,7 +290,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-aggregation-max",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -312,7 +313,7 @@ export const findOpTests: TestDefinition[] = [
 					val: 5,
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				dbFindOpts: {
 					groupBy: "group",
@@ -334,7 +335,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-aggregation-avg",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -357,7 +358,7 @@ export const findOpTests: TestDefinition[] = [
 					val: 6,
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				dbFindOpts: {
 					groupBy: "group",
@@ -379,7 +380,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "dbFindOpts-aggregation-count",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -402,7 +403,7 @@ export const findOpTests: TestDefinition[] = [
 					val: 3,
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				dbFindOpts: {
 					groupBy: "group",
@@ -424,7 +425,7 @@ export const findOpTests: TestDefinition[] = [
 	{
 		domain: "find-options",
 		name: "findOpts-transform",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -447,6 +448,148 @@ export const findOpTests: TestDefinition[] = [
 				throw new Error("transform: transform function not applied");
 			if (results[0].val !== 10)
 				throw new Error("transform: original data should be preserved");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-distinct",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					category: "A",
+					val: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					category: "A",
+					val: 2,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					category: "B",
+					val: 3,
+				},
+			});
+
+			const results = await db.find({
+				collection: "items",
+				dbFindOpts: {
+					distinct: "category",
+				},
+			});
+
+			if (results.length !== 2)
+				throw new Error("distinct: expected 2 unique categories");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-aggregation-sum",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					group: "a",
+					val: 10,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					group: "a",
+					val: 20,
+				},
+			});
+
+			const results = await db.find<any>({
+				collection: "items",
+				dbFindOpts: {
+					groupBy: "group",
+					sum: {
+						totalVal: "val",
+					},
+				},
+			});
+
+			if (results[0].totalVal !== 30) throw new Error("sum: expected 30");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-multi-field-sort",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					lastName: "Smith",
+					age: 30,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					lastName: "Smith",
+					age: 20,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					lastName: "Doe",
+					age: 40,
+				},
+			});
+
+			const results = await db.find({
+				collection: "items",
+				dbFindOpts: {
+					sortBy: [
+						{
+							field: "lastName",
+							asc: true,
+						},
+						{
+							field: "age",
+							asc: false,
+						},
+					],
+				},
+			});
+
+			if (results[0].age !== 40 || results[1].age !== 30)
+				throw new Error("multi-sort: secondary sort failed");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-random-sort",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			for (let i = 0; i < 10; i++)
+				await db.add({
+					collection: "items",
+					data: {
+						val: i,
+					},
+				});
+
+			const results = await db.find({
+				collection: "items",
+				dbFindOpts: {
+					sortBy: "random()",
+					limit: 5,
+				},
+			});
+
+			if (results.length !== 5) throw new Error("random sort: limit failed");
 		},
 	},
 ];

@@ -1,10 +1,11 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const updateTests: TestDefinition[] = [
 	{
 		domain: "crud-update",
 		name: "update-all-matching",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			await db.add({
 				collection: "users",
@@ -45,7 +46,7 @@ export const updateTests: TestDefinition[] = [
 	{
 		domain: "crud-update",
 		name: "update-no-matches-returns-empty",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			const updated = await db.update({
 				collection: "users",
@@ -64,7 +65,7 @@ export const updateTests: TestDefinition[] = [
 	{
 		domain: "crud-update",
 		name: "updateOne-with-match",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			await db.add({
 				collection: "users",
@@ -73,7 +74,7 @@ export const updateTests: TestDefinition[] = [
 					name: "Alice",
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "users",
 				search: {
 					_id: "u1",
@@ -89,7 +90,7 @@ export const updateTests: TestDefinition[] = [
 	{
 		domain: "crud-update",
 		name: "updateOne-without-match-returns-null",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			const result = await db.updateOne({
 				collection: "users",

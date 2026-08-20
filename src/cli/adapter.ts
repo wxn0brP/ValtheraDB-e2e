@@ -34,7 +34,7 @@ export async function validateAdapterFactory(
 		if (!adapter) throw new Error("Adapter factory returned null or undefined");
 
 		const db = new ValtheraClass({
-			dbAction: adapter,
+			adapter,
 		});
 		await db.init();
 

@@ -1,10 +1,11 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const collectionMgmtTests: TestDefinition[] = [
 	{
 		domain: "collection-management",
 		name: "getCollections-empty",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			const collections = await db.getCollections();
 			if (!Array.isArray(collections))
 				throw new Error("getCollections must return an array");
@@ -17,7 +18,7 @@ export const collectionMgmtTests: TestDefinition[] = [
 	{
 		domain: "collection-management",
 		name: "ensureCollection-creates-new",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			const result = await db.ensureCollection("test_coll");
 			if (result !== true)
 				throw new Error(
@@ -31,7 +32,7 @@ export const collectionMgmtTests: TestDefinition[] = [
 	{
 		domain: "collection-management",
 		name: "ensureCollection-existing-returns-false",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("test_coll");
 			const result = await db.ensureCollection("test_coll");
 			if (result !== false)
@@ -43,7 +44,7 @@ export const collectionMgmtTests: TestDefinition[] = [
 	{
 		domain: "collection-management",
 		name: "issetCollection-exists",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("test_coll");
 			const exists = await db.issetCollection("test_coll");
 			if (exists !== true)
@@ -55,7 +56,7 @@ export const collectionMgmtTests: TestDefinition[] = [
 	{
 		domain: "collection-management",
 		name: "issetCollection-not-exists",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			const exists = await db.issetCollection("nonexistent");
 			if (exists !== false)
 				throw new Error(
@@ -66,7 +67,7 @@ export const collectionMgmtTests: TestDefinition[] = [
 	{
 		domain: "collection-management",
 		name: "removeCollection-exists",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("to_remove");
 			const removed = await db.removeCollection("to_remove");
 			if (removed !== true)

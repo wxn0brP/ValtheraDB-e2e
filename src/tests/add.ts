@@ -1,12 +1,13 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-add",
 		name: "add-with-auto-string-id",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
-			const doc = await db.add({
+			const doc = await db.add<any>({
 				collection: "users",
 				data: {
 					name: "John",
@@ -21,9 +22,9 @@ export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-add",
 		name: "add-with-id-gen-false",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("test");
-			const doc = await db.add({
+			const doc = await db.add<any>({
 				collection: "test",
 				data: {
 					name: "NoId",
@@ -37,7 +38,7 @@ export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-add",
 		name: "add-with-manual-id",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("test");
 			const doc = await db.add({
 				collection: "test",
@@ -55,7 +56,7 @@ export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-read",
 		name: "find-all-documents",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			await db.add({
 				collection: "users",
@@ -79,7 +80,7 @@ export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-read",
 		name: "find-with-exact-match",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			await db.add({
 				collection: "users",
@@ -107,7 +108,7 @@ export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-read",
 		name: "find-with-no-matches",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			const results = await db.find({
 				collection: "users",
@@ -122,7 +123,7 @@ export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-read",
 		name: "findOne-with-match",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			await db.add({
 				collection: "users",
@@ -143,7 +144,7 @@ export const addTests: TestDefinition[] = [
 	{
 		domain: "crud-read",
 		name: "findOne-without-match-returns-null",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			const result = await db.findOne({
 				collection: "users",

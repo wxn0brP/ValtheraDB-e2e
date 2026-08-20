@@ -52,7 +52,7 @@ export async function runTests(
 		const adapter = await adapterFactory();
 		if (!adapter) throw new Error("Adapter factory returned null");
 		const db = new ValtheraClass({
-			dbAction: adapter,
+			adapter,
 		});
 		await db.init();
 		return db;

@@ -1,3 +1,5 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
+
 export type TestDomain =
 	| "init"
 	| "collection-management"
@@ -24,7 +26,7 @@ export interface TestResult {
 export interface TestDefinition {
 	domain: TestDomain;
 	name: string;
-	fn: (db: any) => Promise<void>;
+	fn: (db: ValtheraClass) => Promise<void>;
 }
 
 export interface SuiteConfig {

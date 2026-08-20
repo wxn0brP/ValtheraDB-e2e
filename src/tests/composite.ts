@@ -1,10 +1,11 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const compositeTests: TestDefinition[] = [
 	{
 		domain: "composite-operations",
 		name: "updateOneOrAdd-update-existing",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -13,7 +14,7 @@ export const compositeTests: TestDefinition[] = [
 					val: 10,
 				},
 			});
-			const result = await db.updateOneOrAdd({
+			const result = await db.updateOneOrAdd<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -31,7 +32,7 @@ export const compositeTests: TestDefinition[] = [
 	{
 		domain: "composite-operations",
 		name: "updateOneOrAdd-add-new",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			const result = await db.updateOneOrAdd({
 				collection: "items",
@@ -53,7 +54,7 @@ export const compositeTests: TestDefinition[] = [
 	{
 		domain: "composite-operations",
 		name: "toggleOne-remove-existing",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -66,6 +67,7 @@ export const compositeTests: TestDefinition[] = [
 				search: {
 					_id: "i1",
 				},
+				data: {},
 			});
 			if (result.type !== "removed")
 				throw new Error("toggleOne: expected type=removed for existing doc");
@@ -74,7 +76,7 @@ export const compositeTests: TestDefinition[] = [
 	{
 		domain: "composite-operations",
 		name: "toggleOne-add-new",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			const result = await db.toggleOne({
 				collection: "items",

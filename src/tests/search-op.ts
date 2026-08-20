@@ -1,10 +1,11 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "comparison-gt",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -39,7 +40,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "comparison-lt",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -74,7 +75,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "comparison-in",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -112,7 +113,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "exists-true",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -141,7 +142,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "exists-false",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -171,7 +172,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "and-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -214,7 +215,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "search-via-function",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -242,7 +243,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "comparison-gte",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -277,7 +278,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "comparison-lte",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -312,7 +313,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "comparison-nin",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -350,7 +351,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "comparison-between",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -370,7 +371,7 @@ export const searchOpTests: TestDefinition[] = [
 					val: 20,
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				search: {
 					$between: {
@@ -390,7 +391,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "or-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -433,7 +434,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "not-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -468,7 +469,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "type-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -484,7 +485,7 @@ export const searchOpTests: TestDefinition[] = [
 					age: "unknown",
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				search: {
 					$type: {
@@ -501,7 +502,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "regex-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -521,7 +522,7 @@ export const searchOpTests: TestDefinition[] = [
 					name: "Bob",
 				},
 			});
-			const results = await db.find({
+			const results = await db.find<any>({
 				collection: "items",
 				search: {
 					$regex: {
@@ -538,7 +539,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "starts-with-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -575,7 +576,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "ends-with-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -612,7 +613,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "case-insensitive-GT",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -647,7 +648,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "case-insensitive-IN",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -685,7 +686,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "case-insensitive-EXISTS",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -714,7 +715,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "deprecated-arrinc-alias",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -751,7 +752,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "deprecated-arrincall-alias",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -800,7 +801,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "arrInc-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -846,7 +847,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "arrIncAll-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -895,7 +896,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "size-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -939,7 +940,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "deprecated-arrincall-alias",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -988,7 +989,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "idGt-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -1026,7 +1027,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "idLt-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -1064,7 +1065,7 @@ export const searchOpTests: TestDefinition[] = [
 	{
 		domain: "search-operators",
 		name: "case-insensitive-IDGT",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -1090,6 +1091,146 @@ export const searchOpTests: TestDefinition[] = [
 			});
 			if (results.length !== 1)
 				throw new Error("$IDGT: expected 1 result, got: " + results.length);
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "comparison-ne",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					status: "active",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					status: "banned",
+				},
+			});
+
+			const results = await db.find<any>({
+				collection: "items",
+				search: {
+					$ne: {
+						status: "banned",
+					},
+				},
+			});
+
+			if (results.length !== 1) throw new Error("$ne: expected 1 result");
+			if (results[0].status !== "active")
+				throw new Error("$ne: wrong document");
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "case-insensitive-iStartsWith",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					name: "Dr. Smith",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					name: "MR. Jones",
+				},
+			});
+
+			const results = await db.find({
+				collection: "items",
+				search: {
+					$iStartsWith: {
+						name: "dr",
+					},
+				},
+			});
+
+			if (results.length !== 1)
+				throw new Error("$iStartsWith: expected 1 result");
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "subset-operator-bypass",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					$lt: "John Doe",
+					age: 20,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					$lt: "Jane",
+					age: 25,
+				},
+			});
+
+			const results = await db.find<any>({
+				collection: "items",
+				search: {
+					$subset: {
+						$lt: "John Doe",
+					},
+				},
+			});
+
+			if (results.length !== 1) throw new Error("$subset: expected 1 result");
+			if (results[0].age !== 20)
+				throw new Error("$subset: wrong document matched");
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "idGte-and-idLte-operators",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					_id: "id1",
+					val: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					_id: "id2",
+					val: 2,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					_id: "id3",
+					val: 3,
+				},
+			});
+
+			const results = await db.find({
+				collection: "items",
+				search: {
+					$idGte: {
+						_id: "id2",
+					},
+					$idLte: {
+						_id: "id3",
+					},
+				},
+			});
+
+			if (results.length !== 2)
+				throw new Error("$idGte/$idLte: expected 2 results");
 		},
 	},
 ];

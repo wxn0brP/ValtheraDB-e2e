@@ -1,10 +1,11 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "inc-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -13,7 +14,7 @@ export const updateOpTests: TestDefinition[] = [
 					count: 10,
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -31,7 +32,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "unset-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -40,7 +41,7 @@ export const updateOpTests: TestDefinition[] = [
 					temp: "value",
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -58,7 +59,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "push-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -69,7 +70,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -90,7 +91,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "merge-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -102,7 +103,7 @@ export const updateOpTests: TestDefinition[] = [
 					},
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -130,7 +131,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "update-via-function",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -143,7 +144,7 @@ export const updateOpTests: TestDefinition[] = [
 				doc.val = doc.val * 2;
 				return doc;
 			};
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -159,7 +160,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "dec-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -168,7 +169,7 @@ export const updateOpTests: TestDefinition[] = [
 					count: 10,
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -186,7 +187,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "set-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -195,7 +196,7 @@ export const updateOpTests: TestDefinition[] = [
 					name: "old",
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -213,7 +214,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "rename-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -222,7 +223,7 @@ export const updateOpTests: TestDefinition[] = [
 					oldName: "value",
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -242,7 +243,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "pushSet-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -254,7 +255,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -278,7 +279,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "pushAll-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -289,7 +290,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -313,7 +314,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "pull-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -326,7 +327,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -349,7 +350,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "pullAll-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -363,7 +364,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -390,7 +391,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "deepMerge-operator",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -404,7 +405,7 @@ export const updateOpTests: TestDefinition[] = [
 					},
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -431,7 +432,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "case-insensitive-PUSH",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -442,7 +443,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -463,7 +464,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "case-insensitive-INC",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -472,7 +473,7 @@ export const updateOpTests: TestDefinition[] = [
 					count: 10,
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -490,7 +491,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "deprecated-pushset-alias",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -502,7 +503,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -526,7 +527,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "deprecated-pushall-alias",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -537,7 +538,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",
@@ -561,7 +562,7 @@ export const updateOpTests: TestDefinition[] = [
 	{
 		domain: "update-operators",
 		name: "deprecated-pullall-alias",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
 			await db.add({
 				collection: "items",
@@ -575,7 +576,7 @@ export const updateOpTests: TestDefinition[] = [
 					],
 				},
 			});
-			const result = await db.updateOne({
+			const result = await db.updateOne<any>({
 				collection: "items",
 				search: {
 					_id: "i1",

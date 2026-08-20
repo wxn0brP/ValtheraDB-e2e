@@ -1,10 +1,11 @@
+import { ValtheraClass } from "@wxn0brp/db-core";
 import type { TestDefinition } from "../types";
 
 export const removeTests: TestDefinition[] = [
 	{
 		domain: "crud-remove",
 		name: "remove-all-matching",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			await db.add({
 				collection: "users",
@@ -42,7 +43,7 @@ export const removeTests: TestDefinition[] = [
 	{
 		domain: "crud-remove",
 		name: "remove-no-matches-returns-empty",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			const removed = await db.remove({
 				collection: "users",
@@ -58,7 +59,7 @@ export const removeTests: TestDefinition[] = [
 	{
 		domain: "crud-remove",
 		name: "removeOne-with-match",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			await db.add({
 				collection: "users",
@@ -67,7 +68,7 @@ export const removeTests: TestDefinition[] = [
 					name: "Alice",
 				},
 			});
-			const result = await db.removeOne({
+			const result = await db.removeOne<any>({
 				collection: "users",
 				search: {
 					_id: "u1",
@@ -84,7 +85,7 @@ export const removeTests: TestDefinition[] = [
 	{
 		domain: "crud-remove",
 		name: "removeOne-without-match-returns-null",
-		fn: async (db: any) => {
+		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("users");
 			const result = await db.removeOne({
 				collection: "users",

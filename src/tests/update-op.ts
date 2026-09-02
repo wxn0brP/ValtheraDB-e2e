@@ -597,4 +597,96 @@ export const updateOpTests: TestDefinition[] = [
 			}
 		},
 	},
+	{
+		domain: "update-operators",
+		name: "update-multi-doc-with-inc",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					type: "a",
+					count: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					type: "a",
+					count: 2,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					type: "b",
+					count: 10,
+				},
+			});
+			await db.update({
+				collection: "items",
+				search: {
+					type: "a",
+				},
+				updater: {
+					$inc: {
+						count: 100,
+					},
+				},
+			});
+			const results = await db.find<any>({
+				collection: "items",
+				search: {
+					type: "a",
+				},
+			});
+			if (results.length !== 2)
+				throw new Error("update multi: expected 2 results");
+			if (!results.every((r: any) => r.count >= 100))
+				throw new Error(
+					"update multi: all type-a docs should have count >= 100",
+				);
+		},
+	},
+	{
+		domain: "update-operators",
+		name: "pull-multiple-values",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					_id: "i1",
+					scores: [
+						10,
+						20,
+						30,
+						40,
+					],
+				},
+			});
+			const result = await db.updateOne<any>({
+				collection: "items",
+				search: {
+					_id: "i1",
+				},
+				updater: {
+					$pullAll: {
+						scores: [
+							20,
+							40,
+						],
+					},
+				},
+			});
+			if (!result || !Array.isArray(result.scores))
+				throw new Error("$pullAll multi: expected array result");
+			if (result.scores.length !== 2)
+				throw new Error(
+					"$pullAll multi: expected 2 remaining, got: " + result.scores.length,
+				);
+			if (result.scores[0] !== 10 || result.scores[1] !== 30)
+				throw new Error("$pullAll multi: wrong elements remaining");
+		},
+	},
 ];

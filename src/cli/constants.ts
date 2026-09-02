@@ -2,6 +2,7 @@ import type { TestDomain } from "../types";
 
 export const VALID_DOMAINS: TestDomain[] = [
 	"init",
+	"lifecycle",
 	"collection-management",
 	"crud-add",
 	"crud-read",

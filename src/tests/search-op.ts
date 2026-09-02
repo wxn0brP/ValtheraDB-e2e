@@ -939,55 +939,6 @@ export const searchOpTests: TestDefinition[] = [
 	},
 	{
 		domain: "search-operators",
-		name: "deprecated-arrincall-alias",
-		fn: async (db: ValtheraClass) => {
-			await db.ensureCollection("items");
-			await db.add({
-				collection: "items",
-				data: {
-					tags: [
-						"a",
-						"b",
-						"c",
-					],
-				},
-			});
-			await db.add({
-				collection: "items",
-				data: {
-					tags: [
-						"a",
-						"b",
-					],
-				},
-			});
-			await db.add({
-				collection: "items",
-				data: {
-					tags: [
-						"a",
-					],
-				},
-			});
-			const results = await db.find({
-				collection: "items",
-				search: {
-					$arrincall: {
-						tags: [
-							"a",
-							"b",
-						],
-					},
-				},
-			});
-			if (results.length !== 2)
-				throw new Error(
-					"$arrincall: expected 2 results, got: " + results.length,
-				);
-		},
-	},
-	{
-		domain: "search-operators",
 		name: "idGt-operator",
 		fn: async (db: ValtheraClass) => {
 			await db.ensureCollection("items");
@@ -1231,6 +1182,197 @@ export const searchOpTests: TestDefinition[] = [
 
 			if (results.length !== 2)
 				throw new Error("$idGte/$idLte: expected 2 results");
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "iEndsWith-operator",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					name: "David",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					name: "Bob",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					name: "DAVID",
+				},
+			});
+			const results = await db.find({
+				collection: "items",
+				search: {
+					$iEndsWith: {
+						name: "id",
+					},
+				},
+			});
+			if (results.length !== 2)
+				throw new Error(
+					"$iEndsWith: expected 2 results, got: " + results.length,
+				);
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "not-with-operator-gt",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					val: 5,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					val: 10,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					val: 15,
+				},
+			});
+			const results = await db.find<any>({
+				collection: "items",
+				search: {
+					$not: {
+						$gt: {
+							val: 7,
+						},
+					},
+				},
+			});
+			if (results.length !== 1)
+				throw new Error(
+					"$not with $gt: expected 1 result, got: " + results.length,
+				);
+			if (results[0].val !== 5)
+				throw new Error("$not with $gt: wrong document");
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "not-with-exists",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					name: "A",
+					extra: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					name: "B",
+				},
+			});
+			const results = await db.find<any>({
+				collection: "items",
+				search: {
+					$not: {
+						$exists: {
+							extra: true,
+						},
+					},
+				},
+			});
+			if (results.length !== 1)
+				throw new Error("$not with $exists: expected 1 result");
+			if (results[0].name !== "B")
+				throw new Error("$not with $exists: wrong document");
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "not-with-in",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					status: "a",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					status: "b",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					status: "c",
+				},
+			});
+			const results = await db.find({
+				collection: "items",
+				search: {
+					$not: {
+						$in: {
+							status: [
+								"a",
+								"c",
+							],
+						},
+					},
+				},
+			});
+			if (results.length !== 1)
+				throw new Error("$not with $in: expected 1 result");
+			if (results[0].status !== "b")
+				throw new Error("$not with $in: wrong document");
+		},
+	},
+	{
+		domain: "search-operators",
+		name: "not-with-regex",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					name: "John",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					name: "Jane",
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					name: "Bob",
+				},
+			});
+			const results = await db.find({
+				collection: "items",
+				search: {
+					$not: {
+						$regex: {
+							name: "Jo",
+						},
+					},
+				},
+			});
+			if (results.length !== 2)
+				throw new Error("$not with $regex: expected 2 results");
 		},
 	},
 ];

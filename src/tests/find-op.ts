@@ -592,4 +592,256 @@ export const findOpTests: TestDefinition[] = [
 			if (results.length !== 5) throw new Error("random sort: limit failed");
 		},
 	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-offset-beyond-data",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					val: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					val: 2,
+				},
+			});
+			const results = await db.find({
+				collection: "items",
+				dbFindOpts: {
+					offset: 10,
+				},
+			});
+			if (results.length !== 0)
+				throw new Error(
+					"offset beyond data: expected 0 results, got: " + results.length,
+				);
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-limit-zero",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					val: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					val: 2,
+				},
+			});
+			const results = await db.find({
+				collection: "items",
+				dbFindOpts: {
+					limit: 0,
+				},
+			});
+			if (results.length !== 0)
+				throw new Error("limit 0: expected 0 results, got: " + results.length);
+		},
+	},
+	{
+		domain: "find-options",
+		name: "findOpts-select-on-findOne",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					a: 1,
+					b: 2,
+					c: 3,
+				},
+			});
+			const result = await db.findOne({
+				collection: "items",
+				search: {
+					a: 1,
+				},
+				findOpts: {
+					select: [
+						"a",
+						"b",
+					],
+				},
+			});
+			if (!result) throw new Error("findOne with select: expected a result");
+			if (!("a" in result) || !("b" in result))
+				throw new Error("findOne with select: missing fields");
+			if ("c" in result)
+				throw new Error("findOne with select: should not contain c");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "findOpts-exclude-on-findOne",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					a: 1,
+					b: 2,
+					c: 3,
+				},
+			});
+			const result = await db.findOne<any>({
+				collection: "items",
+				search: {
+					a: 1,
+				},
+				findOpts: {
+					exclude: [
+						"c",
+					],
+				},
+			});
+			if (!result) throw new Error("findOne with exclude: expected a result");
+			if ("c" in result)
+				throw new Error("findOne with exclude: c should be excluded");
+			if (result.a !== 1 || result.b !== 2)
+				throw new Error("findOne with exclude: a and b should be present");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-distinct-with-sort",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					category: "B",
+					val: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					category: "A",
+					val: 2,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					category: "B",
+					val: 3,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					category: "A",
+					val: 4,
+				},
+			});
+			const results = await db.find({
+				collection: "items",
+				dbFindOpts: {
+					distinct: "category",
+					sortBy: "category",
+					sortAsc: true,
+				},
+			});
+			if (results.length !== 2)
+				throw new Error("distinct+sort: expected 2 results");
+			if (results[0].category !== "A")
+				throw new Error("distinct+sort: should be sorted ascending");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-groupBy-null-key",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					group: "a",
+					val: 1,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					group: null,
+					val: 2,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					group: "a",
+					val: 3,
+				},
+			});
+			const results = await db.find<any>({
+				collection: "items",
+				dbFindOpts: {
+					groupBy: "group",
+					sum: {
+						total: "val",
+					},
+				},
+			});
+			const groupA = results.find((r: any) => r.group === "a");
+			if (!groupA || groupA.total !== 4)
+				throw new Error("groupBy null: group a should sum to 4");
+		},
+	},
+	{
+		domain: "find-options",
+		name: "dbFindOpts-aggregation-with-search",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					type: "x",
+					val: 10,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					type: "x",
+					val: 20,
+				},
+			});
+			await db.add({
+				collection: "items",
+				data: {
+					type: "y",
+					val: 5,
+				},
+			});
+			const results = await db.find<any>({
+				collection: "items",
+				search: {
+					type: "x",
+				},
+				dbFindOpts: {
+					groupBy: "type",
+					sum: {
+						total: "val",
+					},
+				},
+			});
+			if (results.length !== 1)
+				throw new Error("aggregation+search: expected 1 group");
+			if (results[0].total !== 30)
+				throw new Error(
+					"aggregation+search: expected sum 30, got: " + results[0].total,
+				);
+		},
+	},
 ];

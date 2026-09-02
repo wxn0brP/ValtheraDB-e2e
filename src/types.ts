@@ -13,7 +13,8 @@ export type TestDomain =
 	| "composite-operations"
 	| "edge-cases"
 	| "events"
-	| "collection-api";
+	| "collection-api"
+	| "lifecycle";
 
 export interface TestResult {
 	domain: TestDomain;

@@ -156,4 +156,61 @@ export const addTests: TestDefinition[] = [
 				throw new Error("findOne should return null when no match");
 		},
 	},
+	{
+		domain: "crud-read",
+		name: "updateOneOrAdd-adds-when-not-found",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			const result = await db.updateOneOrAdd<any>({
+				collection: "items",
+				search: {
+					name: "new",
+				},
+				updater: {
+					$set: {
+						name: "new",
+						val: 1,
+					},
+				},
+			});
+			if (result.type !== "added")
+				throw new Error(
+					"updateOneOrAdd: expected type 'added', got: " + result.type,
+				);
+			if (result.data.name !== "new")
+				throw new Error("updateOneOrAdd: data mismatch");
+		},
+	},
+	{
+		domain: "crud-read",
+		name: "updateOneOrAdd-updates-when-found",
+		fn: async (db: ValtheraClass) => {
+			await db.ensureCollection("items");
+			await db.add({
+				collection: "items",
+				data: {
+					_id: "existing",
+					name: "old",
+					val: 0,
+				},
+			});
+			const result = await db.updateOneOrAdd<any>({
+				collection: "items",
+				search: {
+					_id: "existing",
+				},
+				updater: {
+					$set: {
+						name: "updated",
+					},
+				},
+			});
+			if (result.type !== "updated")
+				throw new Error(
+					"updateOneOrAdd: expected type 'updated', got: " + result.type,
+				);
+			if (result.data.name !== "updated")
+				throw new Error("updateOneOrAdd: data not updated");
+		},
+	},
 ];
